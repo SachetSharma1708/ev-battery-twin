@@ -1,15 +1,5 @@
 """
 EV Battery Digital Twin
-=======================
-A physics-based digital twin of an electric vehicle battery pack.
-
-Built on PyBaMM (real Doyle-Fuller-Newman electrochemical model) with
-degradation physics, validated against real NASA battery aging data.
-
-Three core capabilities:
-  1. Predict battery life under different charging habits
-  2. Real-time State of Health (SoH) tracking
-  3. Compare usage scenarios side-by-side
 
 Author: Sachet
 """
@@ -37,11 +27,7 @@ except ImportError:
 
 
 def battery_gauge_svg(soh_percent, cycle, capacity_ah, resistance_ohm, temperature_c):
-    """
-    Render an SVG battery whose fill level and color reflect REAL State of Health.
-    This is a readout of actual model state (like a fuel gauge), not decoration —
-    the fill height and color are driven entirely by the computed SoH.
-    """
+   
     soh = max(0.0, min(100.0, soh_percent))
 
     # Color by health: green (healthy) -> amber (aging) -> red (near EoL)
@@ -112,8 +98,8 @@ st.markdown(
 
 if not PYBAMM_AVAILABLE:
     st.error(
-        "⚠️ **PyBaMM is not installed.** This digital twin needs the physics engine to run.\n\n"
-        "Install it with: `pip install pybamm`\n\nThen restart the app. See the README for full setup."
+        " **PyBaMM is not installed.** This digital twin needs the physics engine to run.\n\n"
+        "Install it with: pip install pybamm\n\nThen restart the app. See the README for full setup."
     )
     st.stop()
 
@@ -126,7 +112,7 @@ if "sim_complete" not in st.session_state:
 
 
 with st.sidebar:
-    st.header("🚗 Your Driving Profile")
+    st.header(" Your Driving Profile")
     st.caption("Configure how you use your EV. The twin will age the battery accordingly.")
 
     st.subheader("Charging Habits")
@@ -155,7 +141,7 @@ with st.sidebar:
 
 
 tab1, tab2, tab3, tab4 = st.tabs([
-    "🔬 Live Twin", "📊 Scenario Comparison", "✅ NASA Validation", "📖 How It Works"
+    "🔬 Live Twin", " Scenario Comparison", " NASA Validation", " How It Works"
 ])
 
 
@@ -168,17 +154,17 @@ with tab1:
     with col1:
         st.info(
             f"**Current Profile:**\n\n"
-            f"🔌 {charge_speed} ({c_rate}C)\n\n"
-            f"🔋 {discharge_to}% → {charge_to}% (DoD: {dod*100:.0f}%)\n\n"
-            f"🌡️ {temperature_c}°C\n\n"
-            f"🔁 {num_cycles} cycles"
+            f" {charge_speed} ({c_rate}C)\n\n"
+            f" {discharge_to}% → {charge_to}% (DoD: {dod*100:.0f}%)\n\n"
+            f" {temperature_c}°C\n\n"
+            f" {num_cycles} cycles"
         )
-        live_playback = st.checkbox("▶️ Watch it age live (cycle-by-cycle)", value=True,
+        live_playback = st.checkbox(" Watch it age live (cycle-by-cycle)", value=True,
                                     help="Step through the simulation so you can watch the "
                                          "battery degrade in real time, like a real twin.")
 
     with col2:
-        run_clicked = st.button("▶️ Run Digital Twin Simulation", type="primary", use_container_width=True)
+        run_clicked = st.button(" Run Digital Twin Simulation", type="primary", use_container_width=True)
 
     # Placeholders for the live twin display (battery + metrics + chart)
     twin_col_left, twin_col_right = st.columns([1, 2])
@@ -242,7 +228,7 @@ with tab1:
 
             st.session_state.twin = twin
             st.session_state.sim_complete = True
-            st.success("✅ Simulation complete!")
+            st.success(" Simulation complete!")
         except Exception as e:
             st.error(f"Simulation error: {e}")
 
@@ -286,7 +272,7 @@ with tab1:
 
             rul = twin.predict_remaining_life(eol_threshold=80.0)
             if rul:
-                st.subheader("🔮 Remaining Useful Life Prediction")
+                st.subheader(" Remaining Useful Life Prediction")
                 r1, r2, r3 = st.columns(3)
                 r1.metric("Predicted EoL", f"Cycle {rul['predicted_eol_cycle']:,}")
                 r2.metric("Cycles Remaining", f"{rul['remaining_cycles']:,}")
@@ -303,11 +289,11 @@ with tab2:
 
     colA, colB = st.columns(2)
     with colA:
-        st.markdown("#### 🟢 Scenario A: Gentle")
+        st.markdown("####  Scenario A: Gentle")
         st.caption("Home charging, 20-80%, moderate climate")
         a_crate, a_dod, a_temp = 0.5, 0.6, 25
     with colB:
-        st.markdown("#### 🔴 Scenario B: Aggressive")
+        st.markdown("####  Scenario B: Aggressive")
         st.caption("Fast DC charging, 0-100%, hot climate")
         b_crate, b_dod, b_temp = 2.0, 1.0, 40
 
@@ -335,9 +321,9 @@ with tab2:
 
                 fig = go.Figure()
                 fig.add_trace(go.Scatter(x=df_a["cycle"], y=df_a["soh_percent"],
-                                         name="🟢 Gentle", line=dict(color="#16a34a", width=3)))
+                                         name=" Gentle", line=dict(color="#16a34a", width=3)))
                 fig.add_trace(go.Scatter(x=df_b["cycle"], y=df_b["soh_percent"],
-                                         name="🔴 Aggressive", line=dict(color="#ef4444", width=3)))
+                                         name=" Aggressive", line=dict(color="#ef4444", width=3)))
                 fig.add_hline(y=80, line_dash="dash", line_color="#94a3b8", annotation_text="End of Life")
                 fig.update_layout(title="Gentle vs Aggressive Usage",
                                   xaxis_title="Cycle", yaxis_title="SoH (%)", height=450)
@@ -355,7 +341,7 @@ with tab2:
 
 
 with tab3:
-    st.subheader("✅ Validation Against Real NASA Battery Data")
+    st.subheader(" Validation Against Real NASA Battery Data")
     st.write("A digital twin is only credible if it matches reality. Here we compare the twin's "
              "physics predictions against real lithium-ion cells that NASA cycled to failure.")
 
@@ -392,7 +378,7 @@ with tab3:
 
 
 with tab4:
-    st.subheader("📖 How This Digital Twin Works")
+    st.subheader(" How This Digital Twin Works")
     st.markdown("""
     This isn't a simulator with made-up numbers — it's a **physics-based digital twin**.
 
@@ -421,5 +407,5 @@ with tab4:
 
 
 st.divider()
-st.caption("🔋 EV Battery Digital Twin · Physics-based aging model validated against NASA data · "
+st.caption(" EV Battery Digital Twin · Physics-based aging model validated against NASA data · "
            "Built as a PM/engineering portfolio project")
