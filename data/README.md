@@ -1,6 +1,6 @@
 # NASA Battery Aging Dataset — Download Guide
 
-This digital twin validates its physics predictions against real lithium-ion
+This digital twin validates its physics predictions against real lithium ion
 battery aging data from NASA's Prognostics Center of Excellence (PCoE).
 
 ## How to download
