@@ -1,9 +1,4 @@
-"""
-Twin Validation
-===============
-Compares the PyBaMM digital twin's degradation predictions against
-real NASA battery aging data, quantifying accuracy with RMSE / MAE / R2.
-"""
+
 
 import numpy as np
 
