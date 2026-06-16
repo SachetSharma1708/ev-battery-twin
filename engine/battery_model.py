@@ -1,35 +1,4 @@
-"""
-Battery Digital Twin — Degradation Engine
-=========================================
-A digital twin of an EV lithium-ion cell.
 
-ARCHITECTURE (an honest description you can defend in an interview):
-  - PyBaMM's Doyle-Fuller-Newman (DFN) model simulates the cell's
-    ELECTROCHEMICAL BEHAVIOR (voltage, current, thermal) — real physics.
-  - Capacity fade / State of Health is computed with a CALIBRATED
-    SEMI-EMPIRICAL AGING LAW. This is the standard approach in real battery
-    management systems and academic life-prediction studies, because pulling a
-    clean, consistent fade signal from a raw DFN solution is unreliable with a
-    generic parameter set.
-
-The aging law (physically grounded):
-  Capacity fade follows a square-root-of-throughput law (the signature of
-  SEI-layer growth, the dominant aging mechanism), accelerated by three real
-  stress factors:
-    1. Temperature  — Arrhenius acceleration (heat speeds side reactions)
-    2. C-rate       — fast charging increases mechanical + plating stress
-    3. Depth of Discharge — deep cycles stress electrodes more than shallow ones
-
-  SoH(n) = 100 - k_eff * sqrt(equivalent_full_cycles)
-
-Calibration target (realistic EV behavior):
-  Gentle use (25C, 0.5C, 60% DoD) reaches 80% SoH (industry end-of-life) at
-  ~1800 equivalent full cycles — years of daily driving. Aggressive use (hot,
-  fast-charge, deep cycles) reaches 80% far sooner. Matches Li-ion literature.
-
-Deterministic: identical inputs give identical outputs, so the single-cycle
-view and the comparison view AGREE.
-"""
 
 import math
 
